@@ -39,6 +39,8 @@ public class Startup
 			x.RegisterValidatorsFromAssemblyContaining<CreateExpenseValidator>();
 			x.RegisterValidatorsFromAssemblyContaining<CreatePaymentDemandValidator>();
 			x.RegisterValidatorsFromAssemblyContaining<CreatePaymentTypeValidator>();
+			x.RegisterValidatorsFromAssemblyContaining<CreatePaymentDemandValidator>();
+			x.RegisterValidatorsFromAssemblyContaining<CreatePaymentCategoryValidator>();
 		});
 
 		var mapperConfig = new MapperConfiguration(cfg => cfg.AddProfile(new MapperConfig()));
