@@ -2,38 +2,35 @@
 
 namespace ExpPayment.Schema;
 
-public class Report: BaseRequest
+public class ReportRequuest: BaseRequest
 {
 	public string Period { get; set; }
 }
 
-public class ExpenseDetails
-{
-	public string PaymentType { get; set; }
-	public int Amount { get; set; }
-}
-public class CompanyReportResponse: BaseResponse
-{
-	public DateTime Date { get; set; }
-	public decimal TotalPayment { get; set; }
-	public List<ExpenseDetails> Expenses { get; set; }
-}
 
 
-public class CompanyExpenseReportResponse: BaseResponse
+public class PersonelExpenseReport : BaseResponse
 {
 	public DateTime Date { get; set; }
-}
-
-public class CompanyExpenseByPersonelReportResponse: BaseResponse
-{
-	public DateTime Date { get; set; }
-}
-
-public class PersonelReportResponse : BaseResponse
-{
-	public DateTime Date { get; set; }
-	public string PaymentCategory { get; set; }
-	public string Description { get; set; }
+	public decimal Amount { get; set; }
 	public bool IsApproved { get; set; }
+	public string Name { get; set; }
+}
+
+public class CompanyPaymentReport : BaseResponse
+{
+	public decimal Amount { get; set; }
+	public string Name { get; set; }
+}
+
+public class CompanyExpenseByPersonel : BaseResponse
+{
+	public int PersonelId { get; set; }
+	public decimal Amount { get; set; }
+}
+
+public class CompanyPaymentDemandReport : BaseResponse
+{
+	public bool IsApproved { get; set; }
+	public decimal Amount { get; set; }
 }

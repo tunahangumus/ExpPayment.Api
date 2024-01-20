@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ExpPayment.Api.Middleware;
+using ExpPayment.Base.Dapper;
 using ExpPayment.Base.Token;
 using ExpPayment.Business.Cqrs;
 using ExpPayment.Business.Mapper;
@@ -45,6 +46,8 @@ public class Startup
 
 		var mapperConfig = new MapperConfiguration(cfg => cfg.AddProfile(new MapperConfig()));
 		services.AddSingleton(mapperConfig.CreateMapper());
+
+		services.AddSingleton<ISqlConnectionFactory, SqlConnectionFactory>();
 
 		services.AddEndpointsApiExplorer();
 		services.AddSwaggerGen();
