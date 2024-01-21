@@ -20,9 +20,9 @@ namespace ExpPayment.Api.Controllers
 		{
 			this.mediator = mediator;
 		}
-		[HttpGet("CreatePersonel")]
+		[HttpPost("CreatePersonel")]
 		[Authorize(Roles = "admin")]
-		public async Task<ApiResponse> GetActiveDemand([FromQuery] ApplicationUserRequest userRequest)
+		public async Task<ApiResponse> GetActiveDemand(ApplicationUserRequest userRequest)
 		{
 			var operation = new UserCreateCommand(userRequest);
 			var result = await mediator.Send(operation);

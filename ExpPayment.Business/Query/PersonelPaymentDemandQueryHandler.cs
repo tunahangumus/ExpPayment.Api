@@ -47,10 +47,18 @@ public class PersonelPaymentDemandQueryHandler :
 
 	public async Task<ApiResponse<PaymentDemandResponse>> Handle(GetPaymentDemandByIdQuery request, CancellationToken cancellationToken)
 	{
-		var entity = await dbContext.Set<PaymentDemand>().Where(x => x.InsertUserId == request.userId && x.IsActive == true && x.Id == request.PaymentDemandId).Include(x => x.Expense).FirstOrDefaultAsync(cancellationToken);
-		var tuple = new Tuple<Expense, PaymentDemand>(entity.Expense, entity);
-		var mappedList = mapper.Map<Tuple<Expense, PaymentDemand>, PaymentDemandResponse>(tuple);
-		return new ApiResponse<PaymentDemandResponse>(mappedList);
+		var entity = await dbContext.Set<PaymentDemand>().Where(x => x.InsertUserId == request.userId && x.Id == request.PaymentDemandId).Include(x => x.Expense).FirstOrDefaultAsync(cancellationToken);
+		if(entity == null)
+		{
+			return new ApiResponse<PaymentDemandResponse>("There is no such payment demand belongs to user.");
+		}
+		else
+		{
+			var tuple = new Tuple<Expense, PaymentDemand>(entity.Expense, entity);
+			var mappedList = mapper.Map<Tuple<Expense, PaymentDemand>, PaymentDemandResponse>(tuple);
+			return new ApiResponse<PaymentDemandResponse>(mappedList);
+		}
+		
 	}
 
 

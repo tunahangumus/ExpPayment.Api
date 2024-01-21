@@ -65,22 +65,24 @@ public class AdminPaymentDemandCommandHandler :
 
 	public async Task<ApiResponse> Handle(AdminPaymentDemandEditCommand request, CancellationToken cancellationToken)
 	{
-		var entity = await dbContext.Set<PaymentDemand>().Where(x => x.InsertUserId == request.userId && x.Id == request.paymentDemandId && x.IsActive == true).FirstOrDefaultAsync(cancellationToken);
+		var entity = await dbContext.Set<PaymentDemand>().Where(x => x.Id == request.paymentDemandId && x.IsActive == true).FirstOrDefaultAsync(cancellationToken);
 		if (entity != null)
 		{
+			entity.UpdateDate = DateTime.UtcNow;
+			entity.UpdateUserId = request.userId;
 			entity.Description = request.description;
 			await dbContext.SaveChangesAsync(cancellationToken);
 			return new ApiResponse("Payment demand successfully updated.");
 		}
 		else
 		{
-			return new ApiResponse("Either there is no such Payment Demand record or the selected Payment Demand is not belong to this user");
+			return new ApiResponse("There is no such Payment Demand recor");
 		}
 	}
 
 	public async Task<ApiResponse> Handle(AdminDeletePaymentDemandCommand request, CancellationToken cancellationToken)
 	{
-		var entity = await dbContext.Set<PaymentDemand>().Where(x => x.InsertUserId == request.userId && x.Id == request.paymentDemandId && x.IsActive == true).FirstOrDefaultAsync(cancellationToken);
+		var entity = await dbContext.Set<PaymentDemand>().Where(x => x.Id == request.paymentDemandId).FirstOrDefaultAsync(cancellationToken);
 		if (entity != null)
 		{
 			//used hard delete here because expense id must be unique.
@@ -90,7 +92,7 @@ public class AdminPaymentDemandCommandHandler :
 		}
 		else
 		{
-			return new ApiResponse("Either there is no such PaymentDemand record or the selected PaymentDemand is not belong to this user");
+			return new ApiResponse("There is no such PaymentDemand record.");
 		}
 	}
 }

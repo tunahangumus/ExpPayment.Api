@@ -44,9 +44,9 @@ namespace ExpPayment.Api.Controllers
 		}
 
 
-		[HttpGet("{id}")]
+		[HttpGet("GetById")]
 		[Authorize(Roles = "personel")]
-		public async Task<ApiResponse<PaymentDemandResponse>> GetDemandById(int id)
+		public async Task<ApiResponse<PaymentDemandResponse>> GetDemandById([FromQuery] int id)
 		{
 			string userId = (User.Identity as ClaimsIdentity).FindFirst("Id")?.Value;
 			var operation = new GetPaymentDemandByIdQuery(int.Parse(userId), id);
@@ -64,9 +64,9 @@ namespace ExpPayment.Api.Controllers
 			return result;
 		}
 
-		[HttpPut("{id}")]
+		[HttpPut]
 		[Authorize(Roles = "personel")]
-		public async Task<ApiResponse> EditDemand(int id,PaymentDemandRequest request)
+		public async Task<ApiResponse> EditDemand([FromQuery] int id,PaymentDemandEditRequest request)
 		{
 			string userId = (User.Identity as ClaimsIdentity).FindFirst("Id")?.Value;
 			var operation = new UpdatePaymentDemandCommand(int.Parse(userId),id, request);
@@ -74,9 +74,9 @@ namespace ExpPayment.Api.Controllers
 			return result;
 		}
 
-		[HttpDelete("{id}")]
+		[HttpDelete]
 		[Authorize(Roles = "personel")]
-		public async Task<ApiResponse> DeleteDemand(int id)
+		public async Task<ApiResponse> DeleteDemand([FromQuery] int id)
 		{
 			string userId = (User.Identity as ClaimsIdentity).FindFirst("Id")?.Value;
 			var operation = new DeletePaymentDemandCommand(int.Parse(userId), id);

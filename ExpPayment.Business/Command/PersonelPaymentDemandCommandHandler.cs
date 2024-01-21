@@ -25,7 +25,14 @@ public class PersonelPaymentDemandCommandHandler :
 	public async Task<ApiResponse> Handle(CreatePaymentDemandCommand request, CancellationToken cancellationToken)
 	{
 		var list = await dbContext.Set<PaymentDemand>().Where(x => x.ExpenseId == request.Model.ExpenseId).Include(x=>x.Expense).ToListAsync(cancellationToken);
-		if(!list.Any())
+		var expense = await dbContext.Set<Expense>().Where(x => x.Id == request.Model.ExpenseId).FirstOrDefaultAsync(cancellationToken);
+		var paymentType = await dbContext.Set<PaymentType>().Where(x => x.Id == request.Model.PaymentTypeId).FirstOrDefaultAsync(cancellationToken);
+		var paymentCategory = await dbContext.Set<PaymentCategory>().Where(x => x.Id == request.Model.PaymentCategoryId).FirstOrDefaultAsync(cancellationToken);
+		if (expense == null || paymentCategory == null || paymentType == null)
+		{
+			return new ApiResponse("This payment can not be created. At least one of the following are invalid: ExpenseId,PaymentTypeId,PaymentCategoryId");
+		}
+		if (!list.Any())
 		{
 			var entity = mapper.Map<PaymentDemandRequest, PaymentDemand>(request.Model);
 			entity.InsertDate = DateTime.UtcNow;

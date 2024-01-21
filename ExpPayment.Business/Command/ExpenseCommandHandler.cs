@@ -30,6 +30,8 @@ public class ExpenseCommandHandler :
 		var entity = mapper.Map<ExpenseRequest, Expense>(request.Model);
 		entity.PersonelId = request.userId;
 		entity.IsActive = true;
+		entity.InsertDate = DateTime.UtcNow;
+		entity.InsertUserId = request.userId;
 		var entityResult = await dbContext.AddAsync(entity, cancellationToken);
 		await dbContext.SaveChangesAsync(cancellationToken);
 

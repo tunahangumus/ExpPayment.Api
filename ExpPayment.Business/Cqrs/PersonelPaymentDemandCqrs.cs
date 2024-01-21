@@ -5,7 +5,7 @@ using MediatR;
 namespace ExpPayment.Business.Cqrs;
 
 public record CreatePaymentDemandCommand(PaymentDemandRequest Model, int userId) : IRequest<ApiResponse>;
-public record UpdatePaymentDemandCommand(int userId, int PaymentDemandId, PaymentDemandRequest Model) : IRequest<ApiResponse>;
+public record UpdatePaymentDemandCommand(int userId, int PaymentDemandId, PaymentDemandEditRequest Model) : IRequest<ApiResponse>;
 public record DeletePaymentDemandCommand(int userId, int PaymentDemandId) : IRequest<ApiResponse>;
 
 

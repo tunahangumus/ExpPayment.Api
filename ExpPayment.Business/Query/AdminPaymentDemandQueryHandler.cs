@@ -44,7 +44,7 @@ public class AdminPaymentDemandQueryHandler :
 
 	public async Task<ApiResponse<List<PaymentDemandResponse>>> Handle(AdminGetAllActivePaymentDemandByPersonelQuery request, CancellationToken cancellationToken)
 	{
-		var list = await dbContext.Set<PaymentDemand>().Include(x => x.Expense).Where(x => x.InsertUserId==request.userId && x.IsActive == true ).ToListAsync(cancellationToken);
+		var list = await dbContext.Set<PaymentDemand>().Include(x => x.Expense).Where(x => x.InsertUserId==request.userId).ToListAsync(cancellationToken);
 		var mappedList = mapper.Map<List<PaymentDemand>, List<PaymentDemandResponse>>(list);
 		return new ApiResponse<List<PaymentDemandResponse>>(mappedList);
 	}

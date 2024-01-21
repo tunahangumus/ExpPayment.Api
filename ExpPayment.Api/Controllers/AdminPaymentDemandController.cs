@@ -43,9 +43,9 @@ namespace ExpPayment.Api.Controllers
 		}
 
 
-		[HttpGet("DemandByPersonelId/{id}")]
+		[HttpGet("DemandByPersonelId/")]
 		[Authorize(Roles = "admin")]
-		public async Task<ApiResponse<List<PaymentDemandResponse>>> GetDemandById(int id)
+		public async Task<ApiResponse<List<PaymentDemandResponse>>> GetDemandById([FromQuery]int id)
 		{
 			var operation = new AdminGetAllActivePaymentDemandByPersonelQuery(id);
 			var result = await mediator.Send(operation);
@@ -54,7 +54,7 @@ namespace ExpPayment.Api.Controllers
 
 		[HttpPost("DemandApproval")]
 		[Authorize(Roles = "admin")]
-		public async Task<ApiResponse> Post(AdminPaymentDemandApproval request,int paymentDemandId)
+		public async Task<ApiResponse> Post(AdminPaymentDemandApproval request, [FromQuery] int paymentDemandId)
 		{
 			string id = (User.Identity as ClaimsIdentity).FindFirst("Id")?.Value;
 			if (request.IsApproved)
@@ -71,9 +71,9 @@ namespace ExpPayment.Api.Controllers
 			}
 		}
 
-		[HttpPut("{id}")]
+		[HttpPut]
 		[Authorize(Roles = "admin")]
-		public async Task<ApiResponse> EditDemand(int id, [StringLength(maximumLength: 90)] string description)
+		public async Task<ApiResponse> EditDemand([FromQuery] int id, [FromQuery][StringLength(maximumLength: 90)] string description)
 		{
 			string userId = (User.Identity as ClaimsIdentity).FindFirst("Id")?.Value;
 			var operation = new AdminPaymentDemandEditCommand(id,int.Parse(userId), description);
@@ -81,9 +81,9 @@ namespace ExpPayment.Api.Controllers
 			return result;
 		}
 
-		[HttpDelete("{id}")]
-		[Authorize(Roles = "personel")]
-		public async Task<ApiResponse> DeleteDemand(int id)
+		[HttpDelete]
+		[Authorize(Roles = "admin")]
+		public async Task<ApiResponse> DeleteDemand([FromQuery] int id)
 		{
 			string userId = (User.Identity as ClaimsIdentity).FindFirst("Id")?.Value;
 			var operation = new AdminDeletePaymentDemandCommand(id,int.Parse(userId));

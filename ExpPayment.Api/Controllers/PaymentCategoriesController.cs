@@ -33,7 +33,7 @@ namespace ExpPayment.Api.Controllers
 		}
 
 
-		[HttpGet("{id}")]
+		[HttpGet("GetById")]
 		[Authorize(Roles = "admin")]
 		public async Task<ApiResponse<PaymentCategoryResponse>> GetById(int id)
 		{
@@ -55,7 +55,7 @@ namespace ExpPayment.Api.Controllers
 		}
 
 
-		[HttpPut("{id}")]
+		[HttpPut]
 		public async Task<ApiResponse> Put(int id, PaymentCategoryRequest request)
 		{
 			string userId = (User.Identity as ClaimsIdentity).FindFirst("Id")?.Value;
@@ -65,7 +65,7 @@ namespace ExpPayment.Api.Controllers
 		}
 
 
-		[HttpDelete("{id}")]
+		[HttpDelete]
 		public async Task<ApiResponse> DeleteAsync(int id)
 		{
 			string userId = (User.Identity as ClaimsIdentity).FindFirst("Id")?.Value;

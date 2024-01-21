@@ -34,9 +34,9 @@ namespace ExpPayment.Api.Controllers
 		}
 
 		// GET api/<ExpensesController>/5
-		[HttpGet("{id}")]
+		[HttpGet("GetById")]
 		[Authorize(Roles = "personel")]
-		public async Task<ApiResponse<ExpenseResponse>> GetById(int id)
+		public async Task<ApiResponse<ExpenseResponse>> GetById([FromQuery]int id)
 		{
 			string userId = (User.Identity as ClaimsIdentity).FindFirst("Id")?.Value;
 			var operation = new GetExpenseByIdQuery(int.Parse(userId),id);
@@ -56,8 +56,9 @@ namespace ExpPayment.Api.Controllers
 		}
 
 		// PUT api/<ExpensesController>/5
-		[HttpPut("{id}")]
-		public async Task<ApiResponse> Put(int id,ExpenseRequest request)
+		[HttpPut]
+		[Authorize(Roles = "personel")]
+		public async Task<ApiResponse> Put([FromQuery] int id,ExpenseRequest request)
 		{
 			string userId = (User.Identity as ClaimsIdentity).FindFirst("Id")?.Value;
 			var operation = new UpdateExpenseCommand(int.Parse(userId), id,request);
@@ -66,8 +67,9 @@ namespace ExpPayment.Api.Controllers
 		}
 
 		// DELETE api/<ExpensesController>/5
-		[HttpDelete("{id}")]
-		public async Task<ApiResponse> DeleteAsync(int id)
+		[HttpDelete]
+		[Authorize(Roles = "personel")]
+		public async Task<ApiResponse> DeleteAsync([FromQuery] int id)
 		{
 			string userId = (User.Identity as ClaimsIdentity).FindFirst("Id")?.Value;
 			var operation = new DeleteExpenseCommand(int.Parse(userId), id);

@@ -27,7 +27,11 @@ public class PaymentTypeCommandHandler :
 
 	public async Task<ApiResponse<PaymentTypeResponse>> Handle(CreatePaymentTypeCommand request, CancellationToken cancellationToken)
 	{
-		
+		var checkEntity = await dbContext.Set<PaymentType>().Where(x => x.Name == request.Model.Name && x.IsActive == true).FirstOrDefaultAsync(cancellationToken);
+		if (checkEntity != null)
+		{
+			return new ApiResponse<PaymentTypeResponse>($"There is already a Payment Type named {request.Model.Name}");
+		}
 		var entity = mapper.Map<PaymentTypeRequest, PaymentType>(request.Model);
 		entity.InsertDate = DateTime.UtcNow;
 		entity.InsertUserId = request.userId;
@@ -41,6 +45,11 @@ public class PaymentTypeCommandHandler :
 
 	public async Task<ApiResponse> Handle(UpdatePaymentTypeCommand request, CancellationToken cancellationToken)
 	{
+		var checkEntity = await dbContext.Set<PaymentType>().Where(x => x.Name == request.Model.Name && x.IsActive == true).FirstOrDefaultAsync(cancellationToken);
+		if (checkEntity != null)
+		{
+			return new ApiResponse($"There is already a Payment Type named {request.Model.Name}");
+		}
 		var entity = await dbContext.Set<PaymentType>().Where(x => x.Id == request.PaymentTypeId && x.IsActive == true).FirstOrDefaultAsync(cancellationToken);
 		if (entity != null)
 		{
@@ -58,6 +67,11 @@ public class PaymentTypeCommandHandler :
 
 	public async Task<ApiResponse> Handle(DeletePaymentTypeCommand request, CancellationToken cancellationToken)
 	{
+		var paymentDemands = await dbContext.Set<PaymentDemand>().Where(x => x.Id == request.PaymentTypeId && x.IsActive == true).FirstOrDefaultAsync(cancellationToken);
+		if (paymentDemands != null)
+		{
+			return new ApiResponse("It is danngerous to delete that Payment Type because it is used by a Payment Demand.");
+		}
 		var entity = await dbContext.Set<PaymentType>().Where(x =>x.Id == request.PaymentTypeId && x.IsActive == true).FirstOrDefaultAsync(cancellationToken);
 		if (entity != null)
 		{
@@ -67,7 +81,7 @@ public class PaymentTypeCommandHandler :
 		}
 		else
 		{
-			return new ApiResponse("Either there is no such PaymentType record or the selected PaymentType is not belong to this user");
+			return new ApiResponse("There is no such PaymentType record.");
 		}
 	}
 }

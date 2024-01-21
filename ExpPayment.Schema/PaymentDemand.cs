@@ -3,9 +3,12 @@ using ExpPayment.Data.Entity;
 
 namespace ExpPayment.Schema;
 
-public class PaymentDemandRequest : BaseRequest
+public class PaymentDemandEditRequest : BaseRequest
 {
 	public string Title { get; set; }
+}
+public class PaymentDemandRequest : PaymentDemandEditRequest
+{
 	public int ExpenseId { get; set; }
 	public int PaymentTypeId { get; set; }
 	public int PaymentCategoryId { get; set; }

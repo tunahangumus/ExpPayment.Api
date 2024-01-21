@@ -25,7 +25,11 @@ public class PaymentCategoryCommandHandler :
 
 	public async Task<ApiResponse<PaymentCategoryResponse>> Handle(CreatePaymentCategoryCommand request, CancellationToken cancellationToken)
 	{
-
+		var checkEntity = await dbContext.Set<PaymentCategory>().Where(x => x.Name == request.Model.Name && x.IsActive == true).FirstOrDefaultAsync(cancellationToken);
+		if(checkEntity != null)
+		{
+			return new ApiResponse<PaymentCategoryResponse>($"There is already a category named {request.Model.Name}");
+		}
 		var entity = mapper.Map<PaymentCategoryRequest, PaymentCategory>(request.Model);
 		entity.InsertDate = DateTime.UtcNow;
 		entity.InsertUserId = request.userId;
@@ -39,6 +43,11 @@ public class PaymentCategoryCommandHandler :
 
 	public async Task<ApiResponse> Handle(UpdatePaymentCategoryCommand request, CancellationToken cancellationToken)
 	{
+		var checkEntity = await dbContext.Set<PaymentCategory>().Where(x => x.Name == request.Model.Name && x.IsActive == true).FirstOrDefaultAsync(cancellationToken);
+		if (checkEntity != null)
+		{
+			return new ApiResponse($"There is already a category named {request.Model.Name}");
+		}
 		var entity = await dbContext.Set<PaymentCategory>().Where(x => x.Id == request.PaymentCategoryId && x.IsActive == true).FirstOrDefaultAsync(cancellationToken);
 		if (entity != null)
 		{
@@ -56,6 +65,11 @@ public class PaymentCategoryCommandHandler :
 
 	public async Task<ApiResponse> Handle(DeletePaymentCategoryCommand request, CancellationToken cancellationToken)
 	{
+		var paymentDemands = await dbContext.Set<PaymentDemand>().Where(x => x.Id == request.PaymentCategoryId && x.IsActive == true).FirstOrDefaultAsync(cancellationToken);
+		if (paymentDemands != null)
+		{
+			return new ApiResponse("It is danngerous to delete that category because it is used by a Payment Demand.");
+		}
 		var entity = await dbContext.Set<PaymentCategory>().Where(x => x.Id == request.PaymentCategoryId && x.IsActive == true).FirstOrDefaultAsync(cancellationToken);
 		if (entity != null)
 		{
