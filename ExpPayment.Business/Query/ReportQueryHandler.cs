@@ -15,13 +15,11 @@ public class ReportQueryHandler :
 	IRequestHandler<GetExpenseByPersonelIdQuery, ApiResponse<List<CompanyExpenseByPersonel>>>,
 	IRequestHandler<GetAllPaymentDemandQuery, ApiResponse<List<CompanyPaymentDemandReport>>>
 {
-	private readonly ExpPaymentDbContext dbContext;
 	private readonly IMapper mapper;
 	private readonly ISqlConnectionFactory connectionFactory;
 
-	public ReportQueryHandler(ExpPaymentDbContext dbContext, IMapper mapper,ISqlConnectionFactory connectionFactory)
+	public ReportQueryHandler(IMapper mapper,ISqlConnectionFactory connectionFactory)
 	{
-		this.dbContext = dbContext;
 		this.mapper = mapper;
 		this.connectionFactory = connectionFactory;
 	}

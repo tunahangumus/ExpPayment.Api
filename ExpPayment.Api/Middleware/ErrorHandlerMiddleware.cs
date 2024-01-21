@@ -21,7 +21,6 @@ public class ErrorHandlerMiddleware
 		}
 		catch (Exception exception)
 		{
-			
 			context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 			context.Response.ContentType = "application/json";
 			await context.Response.WriteAsync(JsonSerializer.Serialize("Internal error!"));
