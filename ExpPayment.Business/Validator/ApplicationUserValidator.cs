@@ -19,6 +19,10 @@ public class CreateApplicationUserValidator : AbstractValidator<ApplicationUserR
 		RuleFor(x => x.FirstName).NotEmpty().MaximumLength(50);
 		RuleFor(x => x.LastName).NotEmpty().MaximumLength(50);
 		RuleFor(x => x.Email).NotEmpty().EmailAddress();
-		RuleFor(x => x.Role).NotEmpty().MaximumLength(30);
+		RuleFor(x => x.Role).NotEmpty().Must(beValidRole).WithMessage("Role must be either personel or admin").MaximumLength(30);
+	}
+	private bool beValidRole(string role)
+	{
+		return role == "personel" || role == "admin";
 	}
 }

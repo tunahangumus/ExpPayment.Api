@@ -112,7 +112,8 @@ public class AdminCommandHandler:IRequestHandler<UserCreateCommand, ApiResponse>
 			string hash = Md5Extension.GetHash(request.Model.Password.Trim());
 			var entity = mapper.Map<ApplicationUserRequest, ApplicationUser>(request.Model);
 			entity.Password = hash;
-			entity.InsertDate = DateTime.Now;
+			entity.InsertDate = DateTime.UtcNow;
+			await dbContext.AddAsync(entity);
 			await dbContext.SaveChangesAsync();
 			return new ApiResponse("");
 		}
