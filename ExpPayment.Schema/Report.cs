@@ -2,7 +2,7 @@
 
 namespace ExpPayment.Schema;
 
-public class ReportRequuest: BaseRequest
+public class ReportRequest: BaseRequest
 {
 	public string Period { get; set; }
 }

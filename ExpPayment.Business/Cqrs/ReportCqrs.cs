@@ -14,6 +14,6 @@ namespace ExpPayment.Business.Cqrs;
 public record GetPersonelTransactionQuery(int userId) : IRequest<ApiResponse<List<PersonelExpenseReport>>>;
 
 
-public record GetCompanyAllPaymentQuery() : IRequest<ApiResponse<List<CompanyPaymentReport>>>;
-public record GetExpenseByPersonelIdQuery() : IRequest<ApiResponse<List<CompanyExpenseByPersonel>>>;
-public record GetAllPaymentDemandQuery() : IRequest<ApiResponse<List<CompanyPaymentDemandReport>>>;
+public record GetCompanyAllPaymentQuery(ReportRequest Model) : IRequest<ApiResponse<List<CompanyPaymentReport>>>;
+public record GetExpenseByPersonelIdQuery(ReportRequest Model) : IRequest<ApiResponse<List<CompanyExpenseByPersonel>>>;
+public record GetAllPaymentDemandQuery(ReportRequest Model) : IRequest<ApiResponse<List<CompanyPaymentDemandReport>>>;

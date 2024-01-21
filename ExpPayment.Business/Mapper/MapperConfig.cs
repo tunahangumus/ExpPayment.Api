@@ -33,7 +33,8 @@ public class MapperConfig : Profile
 		CreateMap<PaymentType, PaymentTypeResponse>();
 
 		CreateMap<PaymentDemandRequest, PaymentDemand>();
-		CreateMap<PaymentDemand, PaymentDemandResponse>();
+		CreateMap<PaymentDemand, PaymentDemandResponse>()
+			.ForMember(d=>d.Amount, opt=>opt.MapFrom(s=>s.Expense.Amount));
 
 		CreateMap<PaymentCategoryRequest, PaymentCategory>();
 		CreateMap<PaymentCategory, PaymentCategoryResponse>();

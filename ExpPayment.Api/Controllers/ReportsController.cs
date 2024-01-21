@@ -34,18 +34,27 @@ namespace ExpPayment.Api.Controllers
 
 		[HttpGet("GetCompanyPayments")]
 		[Authorize(Roles = "admin")]
-		public async Task<ApiResponse<List<CompanyPaymentReport>>> GetCompanyPayment()
+		public async Task<ApiResponse<List<CompanyPaymentReport>>> GetCompanyPayment([FromQuery] ReportRequest request)
 		{
-			var operation = new GetCompanyAllPaymentQuery();
+			var operation = new GetCompanyAllPaymentQuery(request);
 			var result = await mediator.Send(operation);
 			return result;
 		}
 		
 		[HttpGet("GetCompanyExpenseByPersonel")]
 		[Authorize(Roles = "admin")]
-		public async Task<ApiResponse<List<CompanyExpenseByPersonel>>> GetExpenseByPersonel()
+		public async Task<ApiResponse<List<CompanyExpenseByPersonel>>> GetExpenseByPersonel([FromQuery] ReportRequest request)
 		{
-			var operation = new GetExpenseByPersonelIdQuery();
+			var operation = new GetExpenseByPersonelIdQuery(request);
+			var result = await mediator.Send(operation);
+			return result;
+		}
+
+		[HttpGet("GetAllPaymentDemands")]
+		[Authorize(Roles = "admin")]
+		public async Task<ApiResponse<List<CompanyPaymentDemandReport>>> GetAllPaymentDemand([FromQuery] ReportRequest request)
+		{
+			var operation = new GetAllPaymentDemandQuery(request);
 			var result = await mediator.Send(operation);
 			return result;
 		}

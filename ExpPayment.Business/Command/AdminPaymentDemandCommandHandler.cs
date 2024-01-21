@@ -28,6 +28,8 @@ public class AdminPaymentDemandCommandHandler :
 		var entity = await dbContext.Set<PaymentDemand>().Where(x => x.Id == request.paymentDemandId && x.IsActive==true).FirstOrDefaultAsync(cancellationToken);
 		if (entity != null)
 		{
+			//In here there must be a request to Bank API to complete payment. By Using first name, last name, IBAN of the 
+			//User we can make a api call to make EFT. In that situation RabbitMQ can be used.
 			entity.IsActive = false;
 			entity.IsApproved = true;
 			entity.Description = request.Model.Description;
