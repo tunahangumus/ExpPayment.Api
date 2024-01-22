@@ -9,6 +9,6 @@ Default Admin User Info:
 USERNAME: admin
 PASSWORD: admin123
 
-Defaul Personel User Info:
+Default Personel User Info:
 USERNAME: personel
 PASSWORD: personel123
