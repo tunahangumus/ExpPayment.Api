@@ -1,4 +1,4 @@
-Documentation Link: https://documenter.getpostman.com/view/32464919/2s9YymFPQv
+Documentation Link For API: https://documenter.getpostman.com/view/32464919/2s9YymFPQv
 
 In the ExpPayment.Data folder run below comand to Add Migrations to database:
   dotnet ef migrations add InitialMigration -s ../ExpPayment.Api/ 
