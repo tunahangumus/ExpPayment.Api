@@ -100,6 +100,42 @@ namespace ExpPayment.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("ApplicationUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Email = "admin@example.com",
+                            FirstName = "Admin",
+                            IBAN = "AdminIBAN",
+                            InsertDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            InsertUserId = 0,
+                            IsActive = false,
+                            LastActivityDate = new DateTime(2024, 1, 22, 4, 50, 43, 4, DateTimeKind.Utc).AddTicks(803),
+                            LastName = "User",
+                            Password = "0c909a141f1f2c0a1cb602b0b2d7d050",
+                            PasswordRetryCount = 0,
+                            Role = "admin",
+                            Status = 1,
+                            UserName = "admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Email = "user@example.com",
+                            FirstName = "Regular",
+                            IBAN = "UserIBAN",
+                            InsertDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            InsertUserId = 0,
+                            IsActive = false,
+                            LastActivityDate = new DateTime(2024, 1, 22, 4, 50, 43, 4, DateTimeKind.Utc).AddTicks(808),
+                            LastName = "User",
+                            Password = "307802b31f1beecbbca17bcc4d6964d2",
+                            PasswordRetryCount = 0,
+                            Role = "personel",
+                            Status = 1,
+                            UserName = "personel"
+                        });
                 });
 
             modelBuilder.Entity("ExpPayment.Data.Entity.Expense", b =>

@@ -5,9 +5,6 @@ using ExpPayment.Data.Entity;
 using ExpPayment.Data;
 using ExpPayment.Schema;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-using ExpPayment.Data.Migrations;
 using Microsoft.EntityFrameworkCore;
 
 namespace ExpPayment.Business.Command;

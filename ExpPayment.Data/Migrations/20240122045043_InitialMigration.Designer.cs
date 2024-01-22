@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ExpPayment.Data.Migrations
 {
     [DbContext(typeof(ExpPaymentDbContext))]
-    [Migration("20240120071938_Users55")]
-    partial class Users55
+    [Migration("20240122045043_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -103,6 +103,42 @@ namespace ExpPayment.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("ApplicationUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Email = "admin@example.com",
+                            FirstName = "Admin",
+                            IBAN = "AdminIBAN",
+                            InsertDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            InsertUserId = 0,
+                            IsActive = false,
+                            LastActivityDate = new DateTime(2024, 1, 22, 4, 50, 43, 4, DateTimeKind.Utc).AddTicks(803),
+                            LastName = "User",
+                            Password = "0c909a141f1f2c0a1cb602b0b2d7d050",
+                            PasswordRetryCount = 0,
+                            Role = "admin",
+                            Status = 1,
+                            UserName = "admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Email = "user@example.com",
+                            FirstName = "Regular",
+                            IBAN = "UserIBAN",
+                            InsertDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            InsertUserId = 0,
+                            IsActive = false,
+                            LastActivityDate = new DateTime(2024, 1, 22, 4, 50, 43, 4, DateTimeKind.Utc).AddTicks(808),
+                            LastName = "User",
+                            Password = "307802b31f1beecbbca17bcc4d6964d2",
+                            PasswordRetryCount = 0,
+                            Role = "personel",
+                            Status = 1,
+                            UserName = "personel"
+                        });
                 });
 
             modelBuilder.Entity("ExpPayment.Data.Entity.Expense", b =>
@@ -173,15 +209,13 @@ namespace ExpPayment.Data.Migrations
 
                     b.Property<string>("BillingAddress")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
 
                     b.Property<string>("BusinessName")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("character varying(30)");
-
-                    b.Property<int>("ExpenseId")
-                        .HasColumnType("integer");
 
                     b.Property<DateTime>("InsertDate")
                         .HasColumnType("timestamp with time zone");
@@ -191,7 +225,8 @@ namespace ExpPayment.Data.Migrations
 
                     b.Property<string>("InvoiceNumber")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
@@ -211,9 +246,6 @@ namespace ExpPayment.Data.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ExpenseId")
-                        .IsUnique();
 
                     b.ToTable("Invoices");
                 });
@@ -260,6 +292,16 @@ namespace ExpPayment.Data.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(90)
+                        .HasColumnType("character varying(90)")
+                        .HasDefaultValue(" ");
 
                     b.Property<int>("ExpenseId")
                         .HasColumnType("integer");
@@ -356,17 +398,6 @@ namespace ExpPayment.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Personel");
-                });
-
-            modelBuilder.Entity("ExpPayment.Data.Entity.Invoice", b =>
-                {
-                    b.HasOne("ExpPayment.Data.Entity.Expense", "Expense")
-                        .WithMany()
-                        .HasForeignKey("ExpenseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Expense");
                 });
 
             modelBuilder.Entity("ExpPayment.Data.Entity.PaymentDemand", b =>
